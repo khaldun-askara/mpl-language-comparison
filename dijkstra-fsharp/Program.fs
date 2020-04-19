@@ -51,7 +51,8 @@ let main argv =
         find_length end_point (dijkstra_ begin_point list_of_points [(begin_point, 0)])
     
     let tests =
-    // простой тест со графом из википедии
+        // ====================================== тесты ======================================
+        // простой тест со графом из википедии
         let simpletest = [(1, 2, 7); (1, 3, 9);
         (1, 6, 14); (2, 3, 10); 
         (2, 4, 15); (3, 4, 11); 
@@ -59,10 +60,10 @@ let main argv =
         // маленький граф с циклом
         let shorttestcycle = [(1, 2, 1); (2, 3, 1); (3, 1, 1)]
         // маленький граф с большими цифрами
-        let shortbutbigtest = [(1, 2, 1000000); (1, 3, 1000000);
-            (1, 6, 1000000); (2, 3, 1000000); 
-            (2, 4, 1000000); (3, 4, 1000000); 
-            (3, 6, 1000000); (4, 5, 1000000); (6, 5, 1000000)]
+        let shortbutbigtest = [(1, 2, 1000); (1, 3, 3000);
+            (1, 6, 6000); (2, 3, 3000); 
+            (2, 4, 4000); (3, 4, 4000); 
+            (3, 6, 6000); (4, 5, 5000); (6, 5, 5000)]
         // пустой граф
         let emptytest = []
         // граф с повторениями
@@ -82,12 +83,15 @@ let main argv =
                     if ((new System.Random()).Next(1, 3) = 1)
                     then (1, 1, 1)
                     else (i, j, (new System.Random()).Next(1, 100))]
+        
+        // выводит список
         let rec print_list list acc =
             match list with
             | [] -> acc
             |(head::tail) ->
                     printf "%A" head
                     print_list tail acc+1
+        // запускает тесты
         let test test_name begin_point end_point test_list =
             let timer = System.Diagnostics.Stopwatch.StartNew()
             let result = dijkstra begin_point end_point test_list
@@ -101,11 +105,11 @@ let main argv =
             printfn ""
             0
         test "Граф из википедии" 1 6 simpletest |> ignore
-        let garb2 = test "Маленький граф с циклом" 1 3 shorttestcycle
-        let garb3 = test "Маленький граф с большими цифрами" 1 3 shortbutbigtest
-        let garb2 = test "Пустой граф" 1 1 emptytest
-        let garb2 = test "Граф с повторениями" 1 10 replaytest
-        let garb2 = test "Большой случайный граф" 1 100 largetest
+        test "Маленький граф с циклом" 1 3 shorttestcycle |> ignore
+        test "Маленький граф с большими цифрами" 1 3 shortbutbigtest |> ignore
+        test "Пустой граф" 1 1 emptytest |> ignore
+        test "Граф с повторениями" 1 10 replaytest |> ignore
+        test "Большой случайный граф" 1 100 largetest |> ignore
         0
 
     let res = tests
